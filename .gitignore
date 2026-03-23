@@ -1,0 +1,9 @@
+# Dependências
+node_modules/
+
+# Logs do NPM
+npm-debug.log*
+
+# Arquivos temporários do Sistema Operacional (caso edite no Windows/Mac depois)
+.DS_Store
+Thumbs.db
