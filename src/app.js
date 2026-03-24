@@ -26,8 +26,18 @@ app.post('/expenses', (req, res) => {
     if (!title) {
         return res.status(400).json({ error: "O título da despesa é obrigatório." });
     }
+
     if (amount <= 0) {
         return res.status(400).json({ error: "O valor da despesa deve ser maior que zero." });
+    }
+
+    if (date) {
+        const dataDespesa = new Date(date);
+        const dataAtual = new Date();
+        
+        if (dataDespesa > dataAtual) {
+            return res.status(400).json({ error: "A data da despesa não pode ser no futuro." });
+        }
     }
 
     // Cria o objeto "despesa"
@@ -160,6 +170,8 @@ app.put('/expenses/:id', (req, res) => {
     // Captura os novos dados do body
     const dadosNovos = req.body;
 
+    
+
     try {
         // Lemos o arquivo JSON
         const dadosBrutos = fs.readFileSync('./src/data/expenses.json', 'utf-8');
@@ -176,6 +188,16 @@ app.put('/expenses/:id', (req, res) => {
         // Validação do valor, assim como em CREATE
         if (dadosNovos.amount !== undefined && dadosNovos.amount <= 0) {
             return res.status(400).json({ error: "O valor da despesa deve ser maior que zero." });
+        }
+
+        // Validação a data não pode ser no futuro
+        if (dadosNovos.date) {
+            const dataDespesa = new Date(dadosNovos.date);
+            const dataAtual = new Date();
+            
+            if (dataDespesa > dataAtual) {
+                return res.status(400).json({ error: "A data da despesa não pode ser no futuro." });
+            }
         }
 
         // Atualização dos dados
