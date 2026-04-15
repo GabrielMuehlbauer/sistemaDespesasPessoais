@@ -1,8 +1,8 @@
-# Sistema de Despesas Pessoais
+# Sistema de Despesas Pessoais (Expenses Control)
 
 ## 📖 Visão Geral do Projeto
 
-O **Sistema de Despesas Pessoais** é uma API REST desenvolvida em Node.js para facilitar o gerenciamento de finanças pessoais. Ele permite aos usuários realizar as operações clássicas de um CRUD (Criar, Ler, Atualizar e Deletar) sobre despesas do dia a dia. 
+O **Expenses Control** é uma API REST desenvolvida em Node.js para facilitar o gerenciamento de finanças pessoais. Ele permite aos usuários realizar as operações clássicas de um CRUD (Criar, Ler, Atualizar e Deletar) sobre despesas do dia a dia. 
 
 Além das operações padrão, a API também fornece endpoints analíticos simples, como o cálculo de totais gastos e totais agrupados por categoria. Para facilitar e manter a simplicidade estrutural neste momento do projeto, a persistência de dados (banco de dados) é feita em um arquivo de texto local formato `.json`.
 
