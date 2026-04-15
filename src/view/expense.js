@@ -6,73 +6,86 @@ class Expense {
 
     create(req, res) {
         try {
-            ExpenseController.create(title, amount, category, date, description);
-
             // Extrai os dados do body
             const { title, amount, category, date, description } = req.body;
 
+            const novaDespesa = ExpenseController.create(title, amount, category, date, description);
+
             // Status 201 (Created)
-            res.status(201).json(novaDespesa);
+            return res.status(201).json(novaDespesa);
         } catch (erro) {
-            res.status(400).json({ error: erro.message })
-            // Se der algum problema na leitura/escrita do arquivo, avisamos aqui
-            res.status(500).json({ error: "Erro interno no servidor ao tentar salvar a despesa." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     // READ (Listar)
     getAll(req, res) {
         try {
-            ExpenseController.getAll();
+            const despesas = ExpenseController.getAll();
 
             res.status(200).json(despesas);
         } catch (erro) {
-            // Se o arquivo não existir ou der erro, aparece a seguinte mensagem
-            res.status(500).json({ error: "Erro interno ao buscar as despesas." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     getTotal(req, res) {
         try {
-            ExpenseController.getTotal();
+            const total = ExpenseController.getTotal();
 
             // Devolvendo a resposta
             res.status(200).json({ total: total });
         } catch (erro) {
-            res.status(500).json({ error: "Erro interno ao calcular o total." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     getByCategory(req, res) {
         try {
-            ExpenseController.getByCategory();
+            const totalPorCategoria = ExpenseController.getByCategory();
 
             res.status(200).json(totalPorCategoria);
         } catch (erro) {
-            res.status(500).json({ error: "Erro interno ao calcular os totais por categoria." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     // Buscar por ID
     getById(req, res) {
-        ExpenseController.getById(id);
-
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
         try {
+            const despesaEncontrada = ExpenseController.getById(id);
             // Se encontrar o id requisitado, retorna a respectiva despesa
             res.status(200).json(despesaEncontrada);
         } catch (erro) {
-            res.status(400).json({ error: erro.message });
-            res.status(500).json({ error: "Erro interno ao buscar a despesa." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     // UPDATE
     update(req, res) {
-        ExpenseController.update(id, dadosNovos);
-
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
@@ -80,28 +93,37 @@ class Expense {
         const dadosNovos = req.body;
 
         try {
+            const despesaAtualizada = ExpenseController.update(id, dadosNovos);
+
             // Retorna o status OK
             res.status(200).json(despesaAtualizada);
         } catch (erro) {
-            res.status(400).json({ error: erro.message });
-            res.status(404).json({ error: erro.message });
-            res.status(500).json({ error: "Erro interno ao atualizar a despesa." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 
     // DELETE
     delete(req, res) {
-        ExpenseController.delete(id, indexDespesa);
-
         // Capturamos o ID que será apagado
         const { id } = req.params;
 
         try {
+            ExpenseController.delete(id);
+
             // Retorna status OK
             res.status(200).json({ message: "Despesa removida com sucesso!" });
         } catch (erro) {
-            res.status(404).json({ error: erro.message });
-            res.status(500).json({ error: "Erro interno ao tentar remover a despesa." });
+            // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
+            const status = erro.statusCode || 500;
+
+            // Devolve a resposta dinâmica
+            return res.status(status).json({ error: erro.message });
         }
     }
 }
+
+module.exports = new Expense();

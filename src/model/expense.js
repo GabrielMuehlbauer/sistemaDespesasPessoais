@@ -1,3 +1,6 @@
+const fs = require('fs'); // Ferramenta para manipular arquivos JSON (expenses.json)
+const crypto = require('crypto'); // Ferramenta para gerar IDs únicos
+
 class Expense {
     constructor() {
         this.despesas = [];
@@ -15,12 +18,12 @@ class Expense {
             createdAt: new Date().toISOString() // Pega a data/hora atual e formata como texto
         };
 
-        // Adicionamos a nova despesa no Array
-        this.despesas.push(novaDespesa);
-
         // Lemos o arquivo atual e convertemos para Array do JavaScript
         const dadosBrutos = fs.readFileSync('./src/data/expenses.json', 'utf-8');
         this.despesas = JSON.parse(dadosBrutos);
+
+        // Adicionamos a nova despesa no Array
+        this.despesas.push(novaDespesa);
 
         // Convertemos o Array de volta para texto e salvamos
         fs.writeFileSync('./src/data/expenses.json', JSON.stringify(this.despesas, null, 2), 'utf-8');
@@ -82,7 +85,17 @@ class Expense {
         const dadosBrutos = fs.readFileSync('./src/data/expenses.json', 'utf-8');
         this.despesas = JSON.parse(dadosBrutos);
 
-        return this.despesas.find(despesa => despesa.id === id);
+        // Buscamos no Array a despesa que tem o ID exato
+        const despesaEncontrada = this.despesas.find(despesa => despesa.id === id);
+        
+        // Se não encontrar o id requisitado, retorna erro 404
+        if (!despesaEncontrada) {
+            const erro = new Error("Despesa não encontrada.");
+            erro.statusCode = 404;
+            throw erro;
+        }
+
+        return despesaEncontrada;
     }
 
     // UPDATE
@@ -91,6 +104,16 @@ class Expense {
         const dadosBrutos = fs.readFileSync('./src/data/expenses.json', 'utf-8');
         this.despesas = JSON.parse(dadosBrutos);
 
+        // Encontramos o id da despesa que será atualizada
+        const indexDespesa = this.despesas.findIndex(despesa => despesa.id === id);
+
+        // Se não achar, erro 404
+        if (indexDespesa === -1) {
+            const erro = new Error("Despesa não encontrada.");
+            erro.statusCode = 404;
+            throw erro;
+        }
+        
         // Atualização dos dados
         const despesaAtualizada = {
             ...this.despesas[indexDespesa], // Pega a despesa selecionada
@@ -111,10 +134,20 @@ class Expense {
     }
 
     // DELETE
-    delete(indexDespesa) {
+    delete(id) {
         // Lemos o arquivo e convertemos para Array
         const dadosBrutos = fs.readFileSync('./src/data/expenses.json', 'utf-8');
         this.despesas = JSON.parse(dadosBrutos);
+
+        // Procuramos a POSIÇÃO (índice) da despesa no Array
+        const indexDespesa = this.despesas.findIndex(despesa => despesa.id === id);
+
+        // Se o id requisitado não for encontrado, retorna 404
+        if (indexDespesa === -1) {
+            const erro = new Error("Despesa não encontrada.");
+            erro.statusCode = 404;
+            throw erro;
+        }
 
         // Removemos a despesa do Array
         this.despesas.splice(indexDespesa, 1);
