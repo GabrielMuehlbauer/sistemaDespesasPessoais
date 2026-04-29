@@ -12,7 +12,10 @@ class Expense {
             const novaDespesa = ExpenseController.create(title, amount, category, date, description);
 
             // Status 201 (Created)
-            return res.status(201).json(novaDespesa);
+            return res.status(201).json({
+                message: "Despesa adicionada com sucesso!",
+                expense: novaDespesa
+            });
         } catch (erro) {
             // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
             const status = erro.statusCode || 500;
