@@ -25,25 +25,25 @@ app.get('/', (req, res) => {
 });
 
 // Rota CREATE
-app.post('/expenses', ExpenseView.create);
+app.post('/api/expenses', ExpenseView.create);
 
 // Rota READ (Listar)
-app.get('/expenses', ExpenseView.getAll);
+app.get('/api/expenses', ExpenseView.getAll);
 
 // Rota Valor Total das Despesas
-app.get('/expenses/summary/total', ExpenseView.getTotal);
+app.get('/api/expenses/summary/total', ExpenseView.getTotal);
 
 // Rota Valor por Categoria
-app.get('/expenses/summary/category', ExpenseView.getByCategory);
+app.get('/api/expenses/summary/category', ExpenseView.getByCategory);
 
 // Buscar por ID
-app.get('/expenses/:id', ExpenseView.getById);
+app.get('/api/expenses/:id', ExpenseView.getById);
 
 // Rota UPDATE
-app.put('/expenses/:id', ExpenseView.update);
+app.put('/api/expenses/:id', ExpenseView.update);
 
 // Rota DELETE
-app.delete('/expenses/:id', ExpenseView.delete);
+app.delete('/api/expenses/:id', ExpenseView.delete);
 
 // 5. LIGANDO O SERVIDOR
 app.listen(PORT, () => {
