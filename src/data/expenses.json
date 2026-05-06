@@ -1,20 +1,11 @@
 [
   {
-    "id": "6d254910-0da5-49a5-bc6a-052dbf6e2fe1",
+    "id": "10493fdb-7f69-420f-a363-84adeb5453f6",
     "title": "Mercado mensal",
     "amount": 450.5,
     "category": "Alimentação",
     "date": "2023-11-20",
     "description": "Compras do mês no atacadista",
-    "createdAt": "2026-05-05T19:06:44.019Z"
-  },
-  {
-    "id": "1403a772-8ac7-4204-85ec-e9925864e182",
-    "title": "Mercado mensal",
-    "amount": 500.5,
-    "category": "Alimentação",
-    "date": "2023-12-02",
-    "description": "Compras do mês no atacadista",
-    "createdAt": "2026-05-05T19:53:11.999Z"
+    "createdAt": "2026-05-06T00:16:31.045Z"
   }
 ]

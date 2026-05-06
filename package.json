@@ -1,6 +1,6 @@
 {
   "name": "sistemadespesaspessoais",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Um projeto referente a um trabalho da Unidade Curricular de Back End com o objetivo de desenvolver uma API REST em Node.js para gerenciamento de despesas pessoais, permitindo registrar, listar, atualizar e remover despesas.",
   "main": "index.js",
   "scripts": {

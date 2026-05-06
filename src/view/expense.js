@@ -12,27 +12,27 @@ class Expense {
             const novaDespesa = ExpenseController.create(title, amount, category, date, description);
 
             novaDespesa._links = [
-                    {
-                        rel: "self",
-                        method: "GET",
-                        href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
-                    },
-                    {
-                        rel: "update",
-                        method: "PUT",
-                        href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
-                    },
-                    {
-                        rel: "delete",
-                        method: "DELETE",
-                        href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
-                    },
-                    {
-                        rel: "all_expenses",
-                        method: "GET",
-                        href: "http://localhost:3000/api/expenses"
-                    }
-                ];
+                {
+                    rel: "self",
+                    method: "GET",
+                    href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
+                },
+                {
+                    rel: "update",
+                    method: "PUT",
+                    href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
+                },
+                {
+                    rel: "delete",
+                    method: "DELETE",
+                    href: `http://localhost:3000/api/expenses/${novaDespesa.id}`
+                },
+                {
+                    rel: "all_expenses",
+                    method: "GET",
+                    href: "http://localhost:3000/api/expenses"
+                }
+            ];
 
             // Status 201 (Created)
             return res.status(201).json({
@@ -72,7 +72,7 @@ class Expense {
                     }
                 ];
 
-                return despesa;    
+                return despesa;
             });
 
             res.status(200).json(despesasComLinks);
@@ -89,8 +89,18 @@ class Expense {
         try {
             const total = ExpenseController.getTotal();
 
+            const valorTotal = { total: total };
+
+            valorTotal._links = [
+                {
+                    rel: "all_expenses",
+                    method: "GET",
+                    href: "http://localhost:3000/api/expenses"
+                }
+            ];
+
             // Devolvendo a resposta
-            res.status(200).json({ total: total });
+            res.status(200).json(valorTotal);
         } catch (erro) {
             // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
             const status = erro.statusCode || 500;
@@ -103,6 +113,14 @@ class Expense {
     getByCategory(req, res) {
         try {
             const totalPorCategoria = ExpenseController.getByCategory();
+
+            totalPorCategoria._links = [
+                {
+                    rel: "all_expenses",
+                    method: "GET",
+                    href: "http://localhost:3000/api/expenses"
+                }
+            ];
 
             res.status(200).json(totalPorCategoria);
         } catch (erro) {
@@ -125,27 +143,27 @@ class Expense {
             // Adicionando os links dinâmicos com opções de "próximos passos"
             // "_links" é uma das convenções padrões do mercado, faz parte do padrão de design HAL
             despesaEncontrada._links = [
-                    {
-                        rel: "self",
-                        method: "GET",
-                        href: `http://localhost:3000/api/expenses/${id}`
-                    },
-                    {
-                        rel: "update",
-                        method: "PUT",
-                        href: `http://localhost:3000/api/expenses/${id}`
-                    },
-                    {
-                        rel: "delete",
-                        method: "DELETE",
-                        href: `http://localhost:3000/api/expenses/${id}`
-                    },
-                    {
-                        rel: "all_expenses",
-                        method: "GET",
-                        href: "http://localhost:3000/api/expenses"
-                    }
-                ];
+                {
+                    rel: "self",
+                    method: "GET",
+                    href: `http://localhost:3000/api/expenses/${id}`
+                },
+                {
+                    rel: "update",
+                    method: "PUT",
+                    href: `http://localhost:3000/api/expenses/${id}`
+                },
+                {
+                    rel: "delete",
+                    method: "DELETE",
+                    href: `http://localhost:3000/api/expenses/${id}`
+                },
+                {
+                    rel: "all_expenses",
+                    method: "GET",
+                    href: "http://localhost:3000/api/expenses"
+                }
+            ];
 
             // Se encontrar o id requisitado, retorna a respectiva despesa
             res.status(200).json(despesaEncontrada);
@@ -169,6 +187,24 @@ class Expense {
         try {
             const despesaAtualizada = ExpenseController.update(id, dadosNovos);
 
+            despesaAtualizada._links = [
+                {
+                    rel: "self",
+                    method: "GET",
+                    href: `http://localhost:3000/api/expenses/${id}`
+                },
+                {
+                    rel: "delete",
+                    method: "DELETE",
+                    href: `http://localhost:3000/api/expenses/${id}`
+                },
+                {
+                    rel: "all_expenses",
+                    method: "GET",
+                    href: "http://localhost:3000/api/expenses"
+                }
+            ];
+
             // Retorna o status OK
             res.status(200).json(despesaAtualizada);
         } catch (erro) {
@@ -188,8 +224,19 @@ class Expense {
         try {
             ExpenseController.delete(id);
 
+            const respostaDelete = {
+                message: "Despesa excluída com sucesso!",
+                _links: [
+                    {
+                        rel: "all_expenses",
+                        method: "GET",
+                        href: "http://localhost:3000/api/expenses"
+                    }
+                ]
+            };
+
             // Retorna status OK
-            res.status(200).json({ message: "Despesa removida com sucesso!" });
+            res.status(200).json({ respostaDelete });
         } catch (erro) {
             // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
             const status = erro.statusCode || 500;
