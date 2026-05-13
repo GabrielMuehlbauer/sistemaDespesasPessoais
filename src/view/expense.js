@@ -4,12 +4,13 @@ class Expense {
     constructor() {
     }
 
-    create(req, res) {
+    // CREATE
+    async create(req, res) {
         try {
             // Extrai os dados do body
             const { title, amount, category, date, description } = req.body;
 
-            const novaDespesa = ExpenseController.create(title, amount, category, date, description);
+            const novaDespesa = (await ExpenseController.create(title, amount, category, date, description)).toJSON();
 
             novaDespesa._links = [
                 {
@@ -49,12 +50,14 @@ class Expense {
     }
 
     // READ (Listar)
-    getAll(req, res) {
+    async getAll(req, res) {
         try {
-            const despesas = ExpenseController.getAll();
+            const despesas = await ExpenseController.getAll();
 
             const despesasComLinks = despesas.map(despesa => {
-                despesa._links = [
+                const despesaFormatada = despesa.toJSON(); // Converte a instância do Sequelize para um objeto JavaScript simples
+
+                despesaFormatada._links = [
                     {
                         rel: "self",
                         method: "GET",
@@ -72,7 +75,7 @@ class Expense {
                     }
                 ];
 
-                return despesa;
+                return despesaFormatada;
             });
 
             res.status(200).json(despesasComLinks);
@@ -85,9 +88,9 @@ class Expense {
         }
     }
 
-    getTotal(req, res) {
+    async getTotal(req, res) {
         try {
-            const total = ExpenseController.getTotal();
+            const total = await ExpenseController.getTotal();
 
             const valorTotal = { total: total };
 
@@ -110,19 +113,20 @@ class Expense {
         }
     }
 
-    getByCategory(req, res) {
+    async getByCategory(req, res) {
         try {
-            const totalPorCategoria = ExpenseController.getByCategory();
+            const totalPorCategoria = await ExpenseController.getByCategory();
 
-            totalPorCategoria._links = [
-                {
-                    rel: "all_expenses",
-                    method: "GET",
-                    href: "http://localhost:3000/api/expenses"
-                }
-            ];
-
-            res.status(200).json(totalPorCategoria);
+            res.status(200).json({
+                categorias: totalPorCategoria,
+                _links: [
+                    {
+                        rel: "all_expenses",
+                        method: "GET",
+                        href: "http://localhost:3000/api/expenses"
+                    }
+                ]
+            });
         } catch (erro) {
             // Pega o status que veio do Controller/Model, ou usa 500 se for um erro inesperado do sistema
             const status = erro.statusCode || 500;
@@ -133,12 +137,12 @@ class Expense {
     }
 
     // Buscar por ID
-    getById(req, res) {
+    async getById(req, res) {
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
         try {
-            const despesaEncontrada = ExpenseController.getById(id);
+            const despesaEncontrada = (await ExpenseController.getById(id)).toJSON();
 
             // Adicionando os links dinâmicos com opções de "próximos passos"
             // "_links" é uma das convenções padrões do mercado, faz parte do padrão de design HAL
@@ -177,7 +181,7 @@ class Expense {
     }
 
     // UPDATE
-    update(req, res) {
+    async update(req, res) {
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
@@ -185,7 +189,7 @@ class Expense {
         const dadosNovos = req.body;
 
         try {
-            const despesaAtualizada = ExpenseController.update(id, dadosNovos);
+            const despesaAtualizada = (await ExpenseController.update(id, dadosNovos)).toJSON();
 
             despesaAtualizada._links = [
                 {
@@ -217,12 +221,12 @@ class Expense {
     }
 
     // DELETE
-    delete(req, res) {
+    async remove(req, res) {
         // Capturamos o ID que será apagado
         const { id } = req.params;
 
         try {
-            ExpenseController.delete(id);
+            await ExpenseController.remove(id);
 
             const respostaDelete = {
                 message: "Despesa excluída com sucesso!",
