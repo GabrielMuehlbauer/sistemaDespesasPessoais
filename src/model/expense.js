@@ -25,7 +25,7 @@ const Expense = sequelize.define('expense', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'category',
+            model: 'categories',
             key: 'id'
         },
         onDelete: 'CASCADE',
