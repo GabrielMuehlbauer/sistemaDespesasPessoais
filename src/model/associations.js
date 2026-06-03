@@ -1,4 +1,4 @@
-const ExpeseModel = require('../model/expense');
+const ExpenseModel = require('../model/expense');
 const CategoryModel = require('../model/category');
 
 const Expense = ExpenseModel.Expense;
