@@ -10,7 +10,9 @@ class Expense {
             // Extrai os dados do body
             const { title, amount, categoryId, date, description } = req.body;
 
-            const novaDespesa = (await ExpenseController.create(title, amount, categoryId, date, description)).toJSON();
+            const userId = req.user.id;
+
+            const novaDespesa = (await ExpenseController.create(title, amount, categoryId, date, description, userId)).toJSON();
 
             novaDespesa._links = [
                 {
@@ -52,7 +54,10 @@ class Expense {
     // READ (Listar)
     async getAll(req, res) {
         try {
-            const despesas = await ExpenseController.getAll();
+            
+            const userId = req.user.id;
+
+            const despesas = await ExpenseController.getAll(userId);
 
             const despesasComLinks = despesas.map(despesa => {
                 const despesaFormatada = despesa.toJSON(); // Converte a instância do Sequelize para um objeto JavaScript simples
@@ -90,7 +95,10 @@ class Expense {
 
     async getTotal(req, res) {
         try {
-            const total = await ExpenseController.getTotal();
+
+            const userId = req.user.id;
+
+            const total = await ExpenseController.getTotal(userId);
 
             const valorTotal = { total: total };
 
@@ -115,7 +123,10 @@ class Expense {
 
     async getByCategory(req, res) {
         try {
-            const totalPorCategoria = await ExpenseController.getByCategory();
+
+            const userId = req.user.id;
+
+            const totalPorCategoria = await ExpenseController.getByCategory(userId);
 
             res.status(200).json({
                 categorias: totalPorCategoria,
@@ -141,8 +152,10 @@ class Expense {
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
+        const userId = req.user.id;
+
         try {
-            const despesaEncontrada = (await ExpenseController.getById(id)).toJSON();
+            const despesaEncontrada = (await ExpenseController.getById(id, userId)).toJSON();
 
             // Adicionando os links dinâmicos com opções de "próximos passos"
             // "_links" é uma das convenções padrões do mercado, faz parte do padrão de design HAL
@@ -185,11 +198,13 @@ class Expense {
         // Capturamos o ID dinâmico requisitado na URL
         const { id } = req.params;
 
+        const userId = req.user.id;
+
         // Captura os novos dados do body
         const dadosNovos = req.body;
 
         try {
-            const despesaAtualizada = (await ExpenseController.update(id, dadosNovos)).toJSON();
+            const despesaAtualizada = (await ExpenseController.update(id, dadosNovos, userId)).toJSON();
 
             despesaAtualizada._links = [
                 {
@@ -225,8 +240,10 @@ class Expense {
         // Capturamos o ID que será apagado
         const { id } = req.params;
 
+        const userId = req.user.id;
+
         try {
-            await ExpenseController.remove(id);
+            await ExpenseController.remove(id, userId);
 
             const respostaDelete = {
                 message: "Despesa excluída com sucesso!",

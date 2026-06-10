@@ -14,6 +14,10 @@ const User = sequelize.define('user', {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -39,8 +43,8 @@ User.beforeCreate(async (user) => {
 });
 
 // CREATE
-async function create(email, password, role = 'user') {
-    return await User.create({ email, password, role });
+async function create(name, email, password, role = 'user') {
+    return await User.create({ name, email, password, role });
 }
 
 // READ (Listar)
@@ -59,7 +63,7 @@ async function getByEmail(email) {
 }
 
 // UPDATE
-async function update(id, email, password, role) {
+async function update(id, name, email, password, role) {
     const user = await User.findByPk(id);
     if (!user) {
         const erro = new Error("Usuário não encontrado.");
@@ -67,6 +71,7 @@ async function update(id, email, password, role) {
         throw erro;
     }
     // Atualiza os campos se forem fornecidos, ou mantém os valores atuais
+    user.name = name || user.name;
     user.email = email || user.email;
 
     // Se a senha for fornecida, criptografa antes de salvar

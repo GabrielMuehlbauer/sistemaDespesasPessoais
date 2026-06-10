@@ -3,6 +3,9 @@ const express = require('express');
 const { sequelize } = require('./model/database.js');
 const ExpenseView = require('./view/expense.js');
 const CategoryView = require('./view/category.js');
+const UserView = require('./view/user.js');
+const authMiddleware = require('./middleware/auth.js');
+
 require('./model/associations.js'); // Importa as associações entre os modelos
 
 // INICIALIZAÇÃO
@@ -27,6 +30,15 @@ app.get('/', (req, res) => {
         documentacao: "https://github.com/GabrielMuehlbauer/sistemaDespesasPessoais#readme"
     });
 });
+
+/* ROTAS PARA AUTENTICAÇÃO */
+// Rota CREATE (Cadastro)
+app.post('/api/users', UserView.create);
+
+// Rota LOGIN
+app.post('/api/auth/login', UserView.login);
+
+app.use(authMiddleware); // Aplica o middleware de autenticação para as rotas abaixo, garantindo que apenas usuários autenticados possam acessá-las
 
 /* ROTAS PARA DESPESAS */
 // Rota CREATE

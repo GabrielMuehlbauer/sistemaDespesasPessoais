@@ -6,7 +6,7 @@ class Expense {
     }
 
     // CREATE
-    async create(title, amount, categoryId, date, description) {
+    async create(title, amount, categoryId, date, description, userId) {
         // Validação dos dados
         // Se o campo title foi preenchido
         if (!title) {
@@ -50,31 +50,31 @@ class Expense {
             }
         }
         
-        return await ExpenseModel.create(title, amount, categoryId, date, description);
+        return await ExpenseModel.create(title, amount, categoryId, date, description, userId);
     }
 
     // READ (Listar)
-    async getAll() {
-        return await ExpenseModel.getAll();
+    async getAll(userId) {
+        return await ExpenseModel.getAll(userId);
     }
 
     // Valor Total das Despesas
-    async getTotal() {
-        return await ExpenseModel.getTotal();
+    async getTotal(userId) {
+        return await ExpenseModel.getTotal(userId);
     }
 
     // Valor por Categoria
-    async getByCategory() {
-        return await ExpenseModel.getByCategory();
+    async getByCategory(userId) {
+        return await ExpenseModel.getByCategory(userId);
     }
 
     // Buscar por ID
-    async getById(id) {
-        return await ExpenseModel.getById(id);
+    async getById(id, userId) {
+        return await ExpenseModel.getById(id, userId);
     }
 
     // UPDATE
-    async update(id, dadosNovos) {
+    async update(id, dadosNovos, userId) {
         // Validação do valor, assim como em CREATE
         // Se o valor da despesa é maior que 0
         if (dadosNovos.amount !== undefined && dadosNovos.amount <= 0) {
@@ -104,12 +104,12 @@ class Expense {
             throw erro;
         }
 
-        return await ExpenseModel.update(id, dadosNovos);
+        return await ExpenseModel.update(id, dadosNovos, userId);
     }
 
     // DELETE
-    async remove(id) {
-        return await ExpenseModel.remove(id);
+    async remove(id, userId) {
+        return await ExpenseModel.remove(id, userId);
     }
 }
 

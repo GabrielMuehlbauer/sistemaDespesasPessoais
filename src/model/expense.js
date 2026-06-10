@@ -42,23 +42,24 @@ const Expense = sequelize.define('expense', {
 });
 
 // CREATE
-async function create(title, amount, categoryId, date, description) {
-    return await Expense.create({ title, amount, categoryId, date, description });
+async function create(title, amount, categoryId, date, description, userId) {
+    return await Expense.create({ title, amount, categoryId, date, description, userId });
 }
 
 // READ (Listar)
-async function getAll() {
-    return await Expense.findAll();
+async function getAll(userId) {
+    return await Expense.findAll({ where: {userId} });
 }
 
 // Valor Total das Despesas
-async function getTotal() {
-    return await Expense.sum('amount') || 0; // Se não houver despesas, retorna 0
+async function getTotal(userId) {
+    return await Expense.sum('amount', { where: {userId} }) || 0; // Se não houver despesas, retorna 0
 }
 
 // Valor por Categoria
-async function getByCategory() {
+async function getByCategory(userId) {
     const totalPorCategoria = await Expense.findAll({
+        where: { userId },
         attributes: [
             [sequelize.fn('SUM', sequelize.col('amount')), 'total'],
 
@@ -80,8 +81,8 @@ async function getByCategory() {
 }
 
 // Buscar por ID
-async function getById(id) {
-    const despesaEncontrada = await Expense.findByPk(id);
+async function getById(id, userId) {
+    const despesaEncontrada = await Expense.findOne({ where: { id, userId } });
 
     if (!despesaEncontrada) {
         const erro = new Error("Despesa não encontrada.");
@@ -92,9 +93,9 @@ async function getById(id) {
 }
 
 // UPDATE
-async function update(id, dadosNovos) {
+async function update(id, dadosNovos, userId) {
     // Encontramos o id da despesa que será atualizada
-    const despesaAtualizada = await getById(id);
+    const despesaAtualizada = await getById(id, userId);
 
     // Atualização dos dados
     despesaAtualizada.title = dadosNovos.title || despesaAtualizada.title;
@@ -108,8 +109,8 @@ async function update(id, dadosNovos) {
 }
 
 // DELETE
-async function remove(id) {
-    const despesaEncontrada = await getById(id);
+async function remove(id, userId) {
+    const despesaEncontrada = await getById(id, userId);
     await despesaEncontrada.destroy();
     return null;
 }
