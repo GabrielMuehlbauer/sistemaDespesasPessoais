@@ -23,7 +23,7 @@ class Expense {
         }
 
         // Se a categoria existe
-        const categoriaEncontrada = await CategoryModel.getById(categoryId);
+        const categoriaEncontrada = await CategoryModel.getById(categoryId, userId);
 
         if (!categoriaEncontrada) {
             const erro = new Error("A categoria informada não existe.");
@@ -61,8 +61,8 @@ class Expense {
     }
 
     // READ (Listar)
-    async getAll(userId) {
-        return await ExpenseModel.getAll(userId);
+    async getAll(userId, filtros = {}) {
+        return await ExpenseModel.getAll(userId, filtros);
     }
 
     // Valor Total das Despesas
@@ -103,7 +103,7 @@ class Expense {
         }
 
         // Se a categoria existe
-        const categoriaEncontrada = await CategoryModel.getById(dadosNovos.categoryId);
+        const categoriaEncontrada = await CategoryModel.getById(dadosNovos.categoryId, userId);
 
         if (!categoriaEncontrada) {
             const erro = new Error("A categoria informada não existe.");

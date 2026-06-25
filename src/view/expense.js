@@ -57,7 +57,13 @@ class Expense {
             
             const userId = req.user.id;
 
-            const despesas = await ExpenseController.getAll(userId);
+            // Captura os filtros que vêm na URL (?status=PAGA&categoryId=...)
+            const { status, categoryId, minAmount, maxAmount, startDate, endDate } = req.query;
+
+            // Agrupa os filtros num objeto para passar ao Controller
+            const filtros = { status, categoryId, minAmount, maxAmount, startDate, endDate };
+
+            const despesas = await ExpenseController.getAll(userId, filtros);
 
             const despesasComLinks = despesas.map(despesa => {
                 const despesaFormatada = despesa.toJSON(); // Converte a instância do Sequelize para um objeto JavaScript simples

@@ -16,26 +16,36 @@ const Category = sequelize.define('category', {
         allowNull: false,
         unique: true,
     },
+    userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    }
 });
 
 // CREATE
-async function create(name) {
-    return await Category.create({ name });
+async function create(name, userId) {
+    return await Category.create({ name, userId });
 }
 
 // READ (Listar)
-async function getAll() {
-    return await Category.findAll();
+async function getAll(userId) {
+    return await Category.findAll({ where: { userId } });
 }
 
 // READ (Obter por ID)
-async function getById(id) {
-    return await Category.findByPk(id);
+async function getById(id, userId) {
+    return await Category.findOne({ where: { id, userId } });
 }
 
 // UPDATE
-async function update(id, name) {
-    const category = await Category.findByPk(id);
+async function update(id, name, userId) {
+    const category = await Category.getById(id, userId);
     if (!category) {
         const erro = new Error("Categoria não encontrada.");
         erro.statusCode = 404;
@@ -46,8 +56,8 @@ async function update(id, name) {
 }
 
 // DELETE
-async function remove(id) {
-    const category = await Category.findByPk(id);
+async function remove(id, userId) {
+    const category = await Category.getById(id, userId);
     if (!category) {
         const erro = new Error("Categoria não encontrada.");
         erro.statusCode = 404;

@@ -1,3 +1,6 @@
+// Importa os Operadores
+const { Op } = require('sequelize');
+
 // Importa o Sequelize
 const { sequelize } = require('./database');
 
@@ -52,8 +55,44 @@ async function create(title, amount, categoryId, date, description, userId, stat
 }
 
 // READ (Listar)
-async function getAll(userId) {
-    return await Expense.findAll({ where: {userId} });
+async function getAll(userId, filtros) {
+    // Toda busca obrigatoriamente tem que ser do usuário logado
+    const onde = { userId }; 
+
+    // 1. Filtro por Status (Se foi enviado)
+    if (filtros.status) {
+        onde.status = filtros.status;
+    }
+
+    // 2. Filtro por Categoria (Se foi enviado)
+    if (filtros.categoryId) {
+        onde.categoryId = filtros.categoryId;
+    }
+
+    // 3. Filtro por Valores (Mínimo e Máximo)
+    if (filtros.minAmount || filtros.maxAmount) {
+        onde.amount = {};
+        if (filtros.minAmount) {
+            onde.amount[Op.gte] = parseFloat(filtros.minAmount); // gte = Greater Than or Equal (>=)
+        }
+        if (filtros.maxAmount) {
+            onde.amount[Op.lte] = parseFloat(filtros.maxAmount); // lte = Less Than or Equal (<=)
+        }
+    }
+
+    // 4. Filtro por Período/Data (Início e Fim)
+    if (filtros.startDate || filtros.endDate) {
+        onde.date = {};
+        if (filtros.startDate) {
+            onde.date[Op.gte] = new Date(filtros.startDate);
+        }
+        if (filtros.endDate) {
+            onde.date[Op.lte] = new Date(filtros.endDate);
+        }
+    }
+
+    // Executa a busca passando o objeto "where" dinâmico que acabamos de montar
+    return await Expense.findAll({ where: onde });
 }
 
 // Valor Total das Despesas

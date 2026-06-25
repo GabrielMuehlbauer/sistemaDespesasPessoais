@@ -6,8 +6,9 @@ class Category {
     async create(req, res) {
         try {
             const { name } = req.body;
+            const userId = req.user.id; // Captura o ID do usuário logado
 
-            const novaCategoria = (await CategoryController.create(name)).toJSON();
+            const novaCategoria = (await CategoryController.create(name, userId)).toJSON();
 
             novaCategoria._links = [
                 {
@@ -40,7 +41,9 @@ class Category {
 
     async getAll(req, res) {
         try {
-            const categorias = await CategoryController.getAll();
+            const userId = req.user.id; // Filtra as categorias pelo usuário logado
+
+            const categorias = await CategoryController.getAll(userId);
 
             const categoriasComLinks = categorias.map(categoria => {
                 const categoriaFormatada = categoria.toJSON();
@@ -77,7 +80,9 @@ class Category {
     async getById(req, res) {
         try {
             const { id } = req.params;
-            const categoria = await CategoryController.getById(id);
+            const userId = req.user.id; // Filtra as categorias pelo usuário logado
+
+            const categoria = await CategoryController.getById(id, userId);
 
             if (!categoria) {
                 return res.status(404).json({ error: "Categoria não encontrada" });
@@ -117,8 +122,9 @@ class Category {
         try {
             const { id } = req.params;
             const { name } = req.body;
+            const userId = req.user.id; // Filtra as categorias pelo usuário logado
 
-            const categoriaAtualizada = await CategoryController.update(id, name);
+            const categoriaAtualizada = await CategoryController.update(id, name, userId);
 
             if (!categoriaAtualizada) {
                 return res.status(404).json({ error: "Categoria não encontrada" });
@@ -157,7 +163,9 @@ class Category {
         try {
             const { id } = req.params;
 
-            const categoriaExcluida = await CategoryController.remove(id);
+            const userId = req.user.id; // Filtra as categorias pelo usuário logado
+
+            const categoriaExcluida = await CategoryController.remove(id, userId);
 
             if (!categoriaExcluida) {
                 return res.status(404).json({ error: "Categoria não encontrada" });
