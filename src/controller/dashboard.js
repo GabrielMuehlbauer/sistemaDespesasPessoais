@@ -1,4 +1,4 @@
-ExpenseModel = require('../model/expense.js');
+const ExpenseModel = require('../model/expense.js');
 
 class DashboardController {
     async getTotalExpenses(userId) {
@@ -13,13 +13,12 @@ class DashboardController {
 
     async getExpensesByCategory(userId) {
         // Chamando a função getByCategory
-        const dadosBrutos = await ExpenseModel.getByCategory(userId);
+        const dadosbrutos = await ExpenseModel.getByCategory(userId);
 
         return dadosbrutos.map(item => {
-            const json = item.toJSON();
             return {
-                categoria: json.category ? json.category.name : "Sem Categoria",
-                total: parseFloat(json.total)
+                categoria: item.categoryName ? item.categoryName : "Sem Categoria",
+                total: parseFloat(item.total)
             };
         });
     }

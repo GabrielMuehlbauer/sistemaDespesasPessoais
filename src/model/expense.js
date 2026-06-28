@@ -170,6 +170,7 @@ module.exports = {
     create,
     getAll,
     getTotal,
+    getCount,
     getByCategory,
     getById,
     update,
