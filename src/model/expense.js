@@ -100,6 +100,11 @@ async function getTotal(userId) {
     return await Expense.sum('amount', { where: {userId} }) || 0; // Se não houver despesas, retorna 0
 }
 
+// Quantidade de Despesas
+async function getCount(userId) {
+    return await Expense.count({ where: { userId } });
+}
+
 // Valor por Categoria
 async function getByCategory(userId) {
     const totalPorCategoria = await Expense.findAll({

@@ -5,6 +5,7 @@ const ExpenseView = require('./view/expense.js');
 const CategoryView = require('./view/category.js');
 const UserView = require('./view/user.js');
 const authMiddleware = require('./middleware/auth.js');
+const DashboardView = require('./view/dashboard');
 
 require('./model/associations.js'); // Importa as associações entre os modelos
 
@@ -40,18 +41,22 @@ app.post('/api/auth/login', UserView.login);
 
 app.use(authMiddleware); // Aplica o middleware de autenticação para as rotas abaixo, garantindo que apenas usuários autenticados possam acessá-las
 
+/* ROTAS PARA DASHBOARD */  
+// Rota Valor Total das Despesas
+app.get('/dashboard/total-expenses', DashboardView.getTotalExpenses);
+
+// Rota Quantidade de Despesas
+app.get('/dashboard/expenses-count', DashboardView.getExpensesCount);
+
+// Rota Valor por Categoria
+app.get('/dashboard/expenses-by-category', DashboardView.getExpensesByCategory);
+
 /* ROTAS PARA DESPESAS */
 // Rota CREATE
 app.post('/api/expenses', ExpenseView.create);
 
 // Rota READ (Listar)
 app.get('/api/expenses', ExpenseView.getAll);
-
-// Rota Valor Total das Despesas
-app.get('/api/expenses/summary/total', ExpenseView.getTotal);
-
-// Rota Valor por Categoria
-app.get('/api/expenses/summary/category', ExpenseView.getByCategory);
 
 // Buscar por ID
 app.get('/api/expenses/:id', ExpenseView.getById);
