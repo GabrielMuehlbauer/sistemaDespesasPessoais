@@ -1,10 +1,10 @@
-const ExpenseModel = require('../model/expense.js');
-const CategoryModel = require('../model/category.js');
+const ExpenseModel = require('../models/expense.js');
+const CategoryModel = require('../models/category.js');
 
 class Category {
     constructor() {}
 
-    async create(name, userId) {
+    async create(name, description, userId) {
         // Validação dos dados
         // Obrigatoriedade do campo nome
         if (!name) {
@@ -12,7 +12,7 @@ class Category {
             erro.statusCode = 400;
             throw erro;
         }
-        return await CategoryModel.create(name, userId);
+        return await CategoryModel.create(name, description, userId);
     }
     
     async getAll(userId) {
@@ -23,14 +23,14 @@ class Category {
         return await CategoryModel.getById(id, userId);
     }
 
-    async update(id, name, userId) {
+    async update(id, name, description, userId) {
         // Validação dos dados
         if (!name) {
             const erro = new Error("O nome da categoria é obrigatório.");
             erro.statusCode = 400;
             throw erro;
         }
-        return await CategoryModel.update(id, name, userId);
+        return await CategoryModel.update(id, name, description, userId);
     }
 
     async remove(id, userId) {

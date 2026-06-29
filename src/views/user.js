@@ -1,4 +1,4 @@
-const UserController = require('../controller/user');
+const UserController = require('../controllers/user');
 
 class UserView {
 

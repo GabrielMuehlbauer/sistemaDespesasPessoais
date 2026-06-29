@@ -1,13 +1,14 @@
 // IMPORTAÇÕES
 const express = require('express');
-const { sequelize } = require('./model/database.js');
-const ExpenseView = require('./view/expense.js');
-const CategoryView = require('./view/category.js');
-const UserView = require('./view/user.js');
+const { sequelize } = require('./config/database.js');
 const authMiddleware = require('./middleware/auth.js');
-const DashboardView = require('./view/dashboard');
+require('./models/associations.js'); // Importa as associações entre os modelos
 
-require('./model/associations.js'); // Importa as associações entre os modelos
+const userRoutes = require('./routes/userRoutes.js');
+const dashboardRoutes = require('./routes/dashboardRoutes.js');
+const expenseRoutes = require('./routes/expenseRoutes.js');
+const categoryRoutes = require('./routes/categoryRoutes.js');
+
 
 // INICIALIZAÇÃO
 const app = express();
@@ -20,7 +21,7 @@ const { version } = require('../package.json');
 app.use(express.json());
 
 // ROTAS
-// Rota de teste
+// Rota de boas vindas
 app.get('/', (req, res) => {
     res.status(200).json({
         projeto: "Expenses Control",
@@ -32,56 +33,20 @@ app.get('/', (req, res) => {
     });
 });
 
-/* ROTAS PARA AUTENTICAÇÃO */
-// Rota CREATE (Cadastro)
-app.post('/api/users', UserView.create);
+// Usuário (Pública)
+app.use('/api', userRoutes);
 
-// Rota LOGIN
-app.post('/api/auth/login', UserView.login);
+// Autenticação
+app.use(authMiddleware);
 
-app.use(authMiddleware); // Aplica o middleware de autenticação para as rotas abaixo, garantindo que apenas usuários autenticados possam acessá-las
+// Dashboard
+app.use('/api/dashboard', dashboardRoutes);
 
-/* ROTAS PARA DASHBOARD */  
-// Rota Valor Total das Despesas
-app.get('/dashboard/total-expenses', DashboardView.getTotalExpenses);
+// Despesas
+app.use('/api/expenses', expenseRoutes);
 
-// Rota Quantidade de Despesas
-app.get('/dashboard/expenses-count', DashboardView.getExpensesCount);
-
-// Rota Valor por Categoria
-app.get('/dashboard/expenses-by-category', DashboardView.getExpensesByCategory);
-
-/* ROTAS PARA DESPESAS */
-// Rota CREATE
-app.post('/api/expenses', ExpenseView.create);
-
-// Rota READ (Listar)
-app.get('/api/expenses', ExpenseView.getAll);
-
-// Buscar por ID
-app.get('/api/expenses/:id', ExpenseView.getById);
-
-// Rota UPDATE
-app.put('/api/expenses/:id', ExpenseView.update);
-
-// Rota DELETE
-app.delete('/api/expenses/:id', ExpenseView.remove);
-
-/* ROTAS PARA CATEGORIAS */
-// Rota CREATE
-app.post('/api/categories', CategoryView.create);
-
-// Rota READ (Listar)
-app.get('/api/categories', CategoryView.getAll);
-
-// Rota READ (Obter por ID)
-app.get('/api/categories/:id', CategoryView.getById);
-
-// Rota UPDATE
-app.put('/api/categories/:id', CategoryView.update);
-
-// Rota DELETE
-app.delete('/api/categories/:id', CategoryView.remove);
+// Categorias
+app.use('/api/categories', categoryRoutes);
 
 async function main() {
     try {

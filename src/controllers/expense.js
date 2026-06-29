@@ -1,5 +1,5 @@
-const ExpenseModel = require("../model/expense.js");
-const CategoryModel = require("../model/category.js");
+const ExpenseModel = require("../models/expense.js");
+const CategoryModel = require("../models/category.js");
 
 class Expense {
     constructor() {

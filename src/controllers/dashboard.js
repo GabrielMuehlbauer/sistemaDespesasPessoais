@@ -1,4 +1,4 @@
-const ExpenseModel = require('../model/expense.js');
+const ExpenseModel = require('../models/expense.js');
 
 class DashboardController {
     async getTotalExpenses(userId) {

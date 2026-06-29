@@ -1,4 +1,4 @@
-const DashboardController = require('../controller/dashboard');
+const DashboardController = require('../controllers/dashboard');
 
 class DashboardView {
     async getTotalExpenses(req, res) {

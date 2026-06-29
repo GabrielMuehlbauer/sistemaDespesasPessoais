@@ -1,14 +1,14 @@
-const CategoryController = require('../controller/category');
+const CategoryController = require('../controllers/category');
 
 class Category {
     constructor() {}
 
     async create(req, res) {
         try {
-            const { name } = req.body;
+            const { name, description } = req.body;
             const userId = req.user.id; // Captura o ID do usuário logado
 
-            const novaCategoria = (await CategoryController.create(name, userId)).toJSON();
+            const novaCategoria = (await CategoryController.create(name, description, userId)).toJSON();
 
             novaCategoria._links = [
                 {
@@ -121,10 +121,10 @@ class Category {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const { name } = req.body;
+            const { name, description } = req.body;
             const userId = req.user.id; // Filtra as categorias pelo usuário logado
 
-            const categoriaAtualizada = await CategoryController.update(id, name, userId);
+            const categoriaAtualizada = await CategoryController.update(id, name, description, userId);
 
             if (!categoriaAtualizada) {
                 return res.status(404).json({ error: "Categoria não encontrada" });

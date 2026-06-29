@@ -1,4 +1,4 @@
-const ExpenseController = require("../controller/expense.js");
+const ExpenseController = require("../controllers/expense.js");
 
 class Expense {
     constructor() {

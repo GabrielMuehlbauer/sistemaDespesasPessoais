@@ -2,7 +2,7 @@
 const { Op } = require('sequelize');
 
 // Importa o Sequelize
-const { sequelize } = require('./database');
+const { sequelize } = require('../config/database.js');
 
 // Importa a função de DataTypes do Sequelize
 const { DataTypes } = require('sequelize');

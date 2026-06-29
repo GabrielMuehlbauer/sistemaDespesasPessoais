@@ -1,6 +1,6 @@
-const ExpenseModel = require('../model/expense');
-const CategoryModel = require('../model/category');
-const UserModel = require('../model/user');
+const ExpenseModel = require('../models/expense');
+const CategoryModel = require('../models/category');
+const UserModel = require('../models/user');
 
 const Expense = ExpenseModel.Expense;
 const Category = CategoryModel.Category;

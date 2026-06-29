@@ -1,5 +1,5 @@
 // Importa o Sequelize
-const { sequelize } = require('./database');
+const { sequelize } = require('../config/database.js');
 
 // Importa a função de DataTypes do Sequelize
 const { DataTypes } = require('sequelize');
@@ -16,6 +16,10 @@ const Category = sequelize.define('category', {
         allowNull: false,
         unique: true,
     },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     userId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -29,8 +33,8 @@ const Category = sequelize.define('category', {
 });
 
 // CREATE
-async function create(name, userId) {
-    return await Category.create({ name, userId });
+async function create(name, description, userId) {
+    return await Category.create({ name, description, userId });
 }
 
 // READ (Listar)
@@ -44,7 +48,7 @@ async function getById(id, userId) {
 }
 
 // UPDATE
-async function update(id, name, userId) {
+async function update(id, name, description, userId) {
     const category = await Category.getById(id, userId);
     if (!category) {
         const erro = new Error("Categoria não encontrada.");
