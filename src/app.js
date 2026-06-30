@@ -1,6 +1,6 @@
 // IMPORTAÇÕES
 const express = require('express');
-const { sequelize } = require('./config/database.js');
+const { sequelize } = require('./models/database.js');
 const authMiddleware = require('./middleware/auth.js');
 require('./models/associations.js'); // Importa as associações entre os modelos
 
@@ -52,8 +52,6 @@ async function main() {
     try {
         // Testa se o login e a senha do banco de dados estão corretos
         await sequelize.authenticate();
-        // Cria a tabela no banco de dados, caso ela ainda não exista
-        await sequelize.sync( {alter: true} );
         console.log("Conexão com o banco de dados estabelecida com sucesso!");
         // LIGANDO O SERVIDOR
         app.listen(PORT, () => {

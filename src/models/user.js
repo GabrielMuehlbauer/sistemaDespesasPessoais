@@ -1,5 +1,5 @@
 // Importa o Sequelize
-const { sequelize } = require('../config/database.js');
+const { sequelize } = require('./database.js');
 
 // Importa o bcrypt
 const bcrypt = require('bcrypt');
