@@ -103,16 +103,19 @@ class Expense {
         }
 
         // Se a categoria existe
-        const categoriaEncontrada = await CategoryModel.getById(dadosNovos.categoryId, userId);
+        if (dadosNovos.categoryId) {
+            const categoriaEncontrada = await CategoryModel.getById(dadosNovos.categoryId, userId);
 
-        if (!categoriaEncontrada) {
-            const erro = new Error("A categoria informada não existe.");
-            erro.statusCode = 400;
-            throw erro;
+            if (!categoriaEncontrada) {
+                const erro = new Error("A categoria informada não existe.");
+                erro.statusCode = 400;
+                throw erro;
+            }
+
         }
 
         // Bloqueia se enviarem um status inventado
-        if (status && status !== 'PENDENTE' && status !== 'PAGA') {
+        if (dadosNovos.status && dadosNovos.status !== 'PENDENTE' && dadosNovos.status !== 'PAGA') {
             const erro = new Error("O status deve ser apenas 'PENDENTE' ou 'PAGA'.");
             erro.statusCode = 400;
             throw erro;

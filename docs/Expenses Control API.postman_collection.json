@@ -1,0 +1,379 @@
+{
+  "info": {
+    "_postman_id": "05fff220-edd8-4ec7-9cc3-098c958f7df0",
+    "name": "Expenses Control API",
+    "description": "O **Expenses Control** é uma API RESTful desenvolvida em Node.js focada no gerenciamento de finanças pessoais. O sistema permite o cadastro de usuários com autenticação segura e a gestão completa (CRUD) de categorias e despesas, aplicando conceitos avançados de filtros e rotas de dashboard estatístico.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49418393"
+  },
+  "item": [
+    {
+      "name": "Criar Usuário",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"João\",\r\n  \"email\": \"joao@email.com\",\r\n  \"password\": \"senhadojoao\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"joao@email.com\",\r\n  \"password\": \"senhadojoao\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Criar Categoria",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Educação\",\r\n  \"description\": \"Investimentos no aprendizado (Ex: cursos, imersões e workshops)\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/categories",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Criar Despesa",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Curso de Javascript\",\r\n  \"amount\": 199.99,\r\n  \"categoryId\": \"d0b39c81-8559-4990-a8f1-c7cd37af15c5\",\r\n  \"date\": \"2026-06-25\",\r\n  \"description\": \"Pagamento referente ao novo curso online de Javascript do básico ao avançado\",\r\n  \"status\": \"PENDENTE\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/expenses",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar Despesa",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"PAGA\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/expenses/84c3972e-5ff3-4046-b22a-f1bb18288bcd",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses",
+            "84c3972e-5ff3-4046-b22a-f1bb18288bcd"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filtro Status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/expenses?status=PAGA",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "PAGA"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filtro Valor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/expenses?minAmount=100&maxAmount=500",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses"
+          ],
+          "query": [
+            {
+              "key": "minAmount",
+              "value": "100"
+            },
+            {
+              "key": "maxAmount",
+              "value": "500"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filtro Data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/expenses?startDate=2026-06-01&endDate=2026-06-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses"
+          ],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2026-06-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2026-06-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filtro Múltiplo",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/expenses?status=PENDENTE&minAmount=50&categoryId=cae9d26d-1ea0-40fc-8aa6-c39a11842af0",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "PENDENTE"
+            },
+            {
+              "key": "minAmount",
+              "value": "50"
+            },
+            {
+              "key": "categoryId",
+              "value": "cae9d26d-1ea0-40fc-8aa6-c39a11842af0"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Deletar Despesa",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkMzQ0Mzc0LTczY2ItNGQ4Yi1hOWFlLWU0NWVhMjRjODg0NCIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4Mjg2MTg4NCwiZXhwIjoxNzgyOTQ4Mjg0fQ.TWvsef9m5zluCc9NEQM452YaY9oHHRsKBilxCU6Uz4w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/expenses/84c3972e-5ff3-4046-b22a-f1bb18288bcd",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "expenses",
+            "84c3972e-5ff3-4046-b22a-f1bb18288bcd"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

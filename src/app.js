@@ -48,6 +48,20 @@ app.use('/api/expenses', expenseRoutes);
 // Categorias
 app.use('/api/categories', categoryRoutes);
 
+// TRATAMENTO GLOBAL DE ERROS
+app.use((err, req, res, next) => {
+    // Exibe o erro no terminal para facilitar o debug do desenvolvedor
+    console.error('⚠️ Erro capturado pelo sistema:', err.message);
+
+    // Pega o status do erro ou define 500 (Internal Server Error) como padrão
+    const status = err.statusCode || err.status || 500;
+    
+    // Devolve a resposta amigável em JSON
+    res.status(status).json({
+        error: err.message || 'Erro interno do servidor.'
+    });
+});
+
 async function main() {
     try {
         // Testa se o login e a senha do banco de dados estão corretos
